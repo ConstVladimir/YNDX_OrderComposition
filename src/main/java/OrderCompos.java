@@ -85,17 +85,7 @@ public class OrderCompos {
         for (Map.Entry<Long, HashMap<Long,JSONObject>> set : orders.entrySet()){
             HashMap<Long, JSONObject> a = set.getValue();
             // массив items
-            JSONArray b = new JSONArray();
-            for (Map.Entry<Long, JSONObject> belowSet : a.entrySet()){
-                JSONObject c = belowSet.getValue();
-                Long amount = (Long)c.get("count")-(Long)c.get("return_count");
-                if ((c.get("status")).equals("OK") && ( amount > 0)){
-                    JSONObject d = new JSONObject();
-                    d.put("count", amount);
-                    d.put("id", c.get("item_id"));
-                    b.add(d);
-                }
-            }
+            JSONArray b = finalItemsInOrder(a);
             if (!b.isEmpty()){
                 JSONObject e = new JSONObject();
                 e.put("id", set.getKey());
@@ -105,6 +95,21 @@ public class OrderCompos {
 
         }
         return finish;
+    }
+
+    static private JSONArray finalItemsInOrder (HashMap<Long,JSONObject> order){
+        JSONArray b = new JSONArray();
+        for (Map.Entry<Long, JSONObject> belowSet : order.entrySet()){
+            JSONObject c = belowSet.getValue();
+            Long amount = (Long)c.get("count")-(Long)c.get("return_count");
+            if ((c.get("status")).equals("OK") && ( amount > 0)){
+                JSONObject d = new JSONObject();
+                d.put("count", amount);
+                d.put("id", c.get("item_id"));
+                b.add(d);
+            }
+        }
+        return b;
     }
 }
 
