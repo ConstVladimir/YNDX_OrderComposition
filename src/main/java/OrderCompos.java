@@ -24,8 +24,8 @@ public class OrderCompos {
     public static void main(String[] args) {
 
         Path currentRelativePath = Paths.get("");
-        String inF = currentRelativePath.toAbsolutePath().toString() + rscPath + inputFile;
-        String outF = currentRelativePath.toAbsolutePath().toString() + rscPath + outputFile;
+        String inF = currentRelativePath.toAbsolutePath() + rscPath + inputFile;
+        String outF = currentRelativePath.toAbsolutePath() + rscPath + outputFile;
 
         JSONParser parser = new JSONParser();
         JSONArray newOrders = new JSONArray();
@@ -89,7 +89,7 @@ public class OrderCompos {
             for (Map.Entry<Long, JSONObject> belowSet : a.entrySet()){
                 JSONObject c = belowSet.getValue();
                 Long amount = (Long)c.get("count")-(Long)c.get("return_count");
-                if (((String)c.get("status")).equals("OK") && ( amount > 0)){
+                if ((c.get("status")).equals("OK") && ( amount > 0)){
                     JSONObject d = new JSONObject();
                     d.put("count", amount);
                     d.put("id", c.get("item_id"));
