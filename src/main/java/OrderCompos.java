@@ -69,10 +69,9 @@ public class OrderCompos {
                 if (!a.containsKey(item)) a.put(item, nowOrder);
                 else{
                     if ((Long)a.get(item).get("event_id") < event){
-                        //if (((String)nowOrder.get("status")).equals("CANCEL")) a.remove(item);
-                        //else if (((Long)nowOrder.get("count")-(Long)nowOrder.get("return_count")) < 1 ) a.remove(item);
-                        //else Как вариант, но будут лишние промежуточные удаления...
-                            a.replace(item,nowOrder);
+                        if (nowOrder.get("status").equals("CANCEL")) a.remove(item);
+                        else if (((Long)nowOrder.get("count")-(Long)nowOrder.get("return_count")) < 1 ) a.remove(item);
+                        else a.replace(item,nowOrder);
                     }
                 }
             }
@@ -102,58 +101,22 @@ public class OrderCompos {
         for (Map.Entry<Long, JSONObject> belowSet : order.entrySet()){
             JSONObject c = belowSet.getValue();
             Long amount = (Long)c.get("count")-(Long)c.get("return_count");
-            if ((c.get("status")).equals("OK") && ( amount > 0)){
+            //if ((c.get("status")).equals("OK") && ( amount > 0)){
                 JSONObject d = new JSONObject();
                 d.put("count", amount);
                 d.put("id", c.get("item_id"));
                 b.add(d);
-            }
+            //}
         }
         return b;
     }
 }
 
-/*class liveOrder  {
+/*class Order  {
     private Long event_id;
     private Long order_id;
     private Long item_id;
     private Long count;
     private Long return_count;
     private String status;
-
-    liveOrder (JSONObject i){
-        event_id = (Long) i.get("event_id");
-        order_id = (Long) i.get("order_id");
-        item_id = (Long) i.get("item_id");
-        count = (Long) i.get("count");
-        return_count = (Long) i.get("return_count");
-        status = (String) i.get("status");
-    }
-
-    boolean update (JSONObject j){
-        return true;
-    }
-}
-class Item {
-    private Long event_id;
-    private Long count;
-    private Long return_count;
-    private String status;
-
-    Item (JSONObject i){
-        event_id = (Long) i.get("event_id");
-        count = (Long) i.get("count");
-        return_count = (Long) i.get("return_count");
-        status = (String) i.get("status");
-    }
-
-    void update (JSONObject j){
-        if (event_id < (Long) j.get("event_id")){
-            event_id = (Long) j.get("event_id");
-            count = (Long) j.get("count");
-            return_count = (Long) j.get("return_count");
-            status = (String) j.get("status");
-        }
-    }
-
-}*/
+*/
